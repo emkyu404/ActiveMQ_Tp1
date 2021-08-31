@@ -27,12 +27,14 @@ public class MyReceiver {
 			Queue queue = (Queue) applicationContext.getBean("queue");
 			
 			// Create a connection. See https://docs.oracle.com/javaee/7/api/javax/jms/package-summary.html
-			ConnectionFactory connectionFactory = new ActiveMQConnectionFactory("tcp://192.168.43.8:61616");
+			ConnectionFactory connectionFactory = new ActiveMQConnectionFactory("tcp://localhost:61616");
 			Connection connection = connectionFactory.createConnection();
 			
 			// Open a session
 			Session session = connection.createSession(false,Session.AUTO_ACKNOWLEDGE);
-			Destination destination = session.createTopic("DTopic");
+			Destination destination = session.createQueue("myQueue");
+			
+			//Destination destination = session.createTopic("dTopic");
 			
 			// start the connection
 			connection.start();
@@ -57,6 +59,8 @@ public class MyReceiver {
 					}
 				}
 			});
+			
+			
 
 		}catch(Exception e){
 			e.printStackTrace();

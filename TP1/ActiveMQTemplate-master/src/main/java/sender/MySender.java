@@ -37,16 +37,20 @@ public class MySender {
 			
 			// Open a session without transaction and acknowledge automatic
 			Session session = connection.createSession(false, Session.AUTO_ACKNOWLEDGE);
-			Destination destination = session.createTopic("DTopic");
+			Destination destination = session.createQueue("myQueue");
+			
+			//Destination destination = session.createTopic("dTopic");
 			
 			// Start the connection
 			connection.start();
 			// Create a sender
 			MessageProducer producer = session.createProducer(destination);
 			producer.setDeliveryMode(DeliveryMode.NON_PERSISTENT);
+			producer.setPriority(4);
+			producer.setTimeToLive(10000);
 			
 			// Create a message
-			String text = "Hello world! From: ";
+			String text = "Priority 4 ! From : Sender 1";
 			TextMessage message = session.createTextMessage(text);
 			
 			// Send the message
