@@ -31,7 +31,7 @@ public class MyReceiver {
 			Connection connection = connectionFactory.createConnection();
 			
 			// Open a session
-			Session session = connection.createSession(false,Session.AUTO_ACKNOWLEDGE);
+			Session session = connection.createSession(true,Session.AUTO_ACKNOWLEDGE);
 			Destination destination = session.createQueue("myQueue");
 			
 			//Destination destination = session.createTopic("dTopic");
