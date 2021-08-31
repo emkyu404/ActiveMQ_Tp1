@@ -2,6 +2,7 @@ package sender;
 
 import javax.jms.Connection;
 import javax.jms.ConnectionFactory;
+import javax.jms.DeliveryMode;
 import javax.jms.Destination;
 import javax.jms.Message;
 import javax.jms.MessageProducer;
@@ -32,22 +33,31 @@ public class MySender {
 			// Create a connection. See https://docs.oracle.com/javaee/7/api/javax/jms/package-summary.html
 			ConnectionFactory connectionFactory = new ActiveMQConnectionFactory("tcp://localhost:61616");
 			Connection connection = connectionFactory.createConnection();
-			connection.start();
+
 			
 			// Open a session without transaction and acknowledge automatic
 			Session session = connection.createSession(false, Session.AUTO_ACKNOWLEDGE);
-			
 			Destination destination = session.createTopic("DTopic");
 			
-			MessageProducer producer = session.createProducer(destination);
-			
 			// Start the connection
+			connection.start();
 			// Create a sender
+			MessageProducer producer = session.createProducer(destination);
+			producer.setDeliveryMode(DeliveryMode.NON_PERSISTENT);
+			
 			// Create a message
+			String text = "Hello world! From: ";
+			TextMessage message = session.createTextMessage(text);
+			
 			// Send the message
+			producer.send(message);
+			
 			// Close the session
+			session.close();
+			
 			// Close the connection
-
+			connection.close();
+			
 		}catch(Exception e){
 			e.printStackTrace();
 		}
